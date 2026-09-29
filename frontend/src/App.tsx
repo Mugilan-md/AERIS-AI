@@ -5,7 +5,8 @@ import {
   fetchAlerts,
   fetchExplanation,
   setDemoStep,
-  setMode
+  setMode,
+  resetManualTelemetry
 } from './services/api';
 import {
   StationLocation,
@@ -26,6 +27,7 @@ import { AlertsSection } from './components/AlertsSection';
 import { MapSection } from './components/MapSection';
 import { HistoricalSection } from './components/HistoricalSection';
 import { ExplainableAIModal } from './components/ExplainableAIModal';
+import { ManualTestPanel } from './components/ManualTestPanel';
 
 import { Sparkles, AlertTriangle, ShieldCheck, Flame, RefreshCw, Compass } from 'lucide-react';
 
@@ -292,6 +294,12 @@ export function App() {
             selectedLocation={currentLoc}
             weather={dashboard.weather}
             onSelectLocation={handleSelectLocation}
+            onNewCustomLocation={async (newLocId) => {
+              // Refresh locations list then select the new custom point
+              const locs = await fetchLocations();
+              setLocations(locs);
+              await handleSelectLocation(newLocId);
+            }}
           />
         )}
 
@@ -310,7 +318,23 @@ export function App() {
           </div>
         )}
 
-        {/* TAB 4: ALERT CENTER */}
+        {/* TAB 4: MANUAL TESTING */}
+        {activeTab === 'manual' && (
+          <ManualTestPanel
+            locations={locations}
+            selectedLocationId={selectedLocationId}
+            onApply={async (locId) => {
+              await handleSelectLocation(locId);
+              setActiveTab('command');
+            }}
+            onReset={async () => {
+              try { await resetManualTelemetry(); } catch {}
+              await loadDashboardData(selectedLocationId);
+            }}
+          />
+        )}
+
+        {/* TAB 5: ALERT CENTER */}
         {activeTab === 'alerts' && (
           <AlertsSection
             alerts={dashboard.alerts}
@@ -319,7 +343,7 @@ export function App() {
           />
         )}
 
-        {/* TAB 5: EXPLAINABLE AI */}
+        {/* TAB 6: EXPLAINABLE AI */}
         {activeTab === 'explain' && (
           <div className="bg-white clay-card p-6 lg:p-8 space-y-6">
             <div className="flex items-center justify-between pb-4 border-b border-black/5">

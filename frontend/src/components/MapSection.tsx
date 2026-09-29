@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
-import { Layers, Wind, Flame, Compass, MapPin, Eye, Check, Globe, Navigation } from 'lucide-react';
+import { Layers, Wind, Flame, Compass, MapPin, Eye, Check, Globe, Navigation, PlusCircle, Loader } from 'lucide-react';
 import { HotspotData, StationLocation, WeatherData } from '../types';
+import { createCustomLocation } from '../services/api';
 
 interface MapSectionProps {
   hotspots: HotspotData[];
   selectedLocation: StationLocation;
   weather: WeatherData;
   onSelectLocation: (id: string) => void;
+  onNewCustomLocation?: (newLocId: string) => void;
 }
 
 const CITY_COORDINATES: { [key: string]: { center: [number, number]; zoom: number; label: string } } = {
@@ -21,7 +23,8 @@ export const MapSection: React.FC<MapSectionProps> = ({
   hotspots,
   selectedLocation,
   weather,
-  onSelectLocation
+  onSelectLocation,
+  onNewCustomLocation
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
@@ -29,6 +32,9 @@ export const MapSection: React.FC<MapSectionProps> = ({
   const circlesRef = useRef<L.Circle[]>([]);
   const [activeLayer, setActiveLayer] = useState<'AQI' | 'HOTSPOTS' | 'WIND'>('AQI');
   const [activeCityFilter, setActiveCityFilter] = useState<string>('current');
+  const [pinDropMode, setPinDropMode] = useState<boolean>(false);
+  const [pinLoading, setPinLoading] = useState<boolean>(false);
+  const [pinFeedback, setPinFeedback] = useState<string | null>(null);
 
   const selectedHotspot = hotspots.find(h => h.location_id === selectedLocation.id) || hotspots[0];
 
@@ -76,6 +82,47 @@ export const MapSection: React.FC<MapSectionProps> = ({
       duration: 1.0
     });
   }, [selectedLocation.id, selectedLocation.lat, selectedLocation.lon]);
+
+  // Pin-drop click handler for custom location
+  useEffect(() => {
+    const map = mapInstanceRef.current;
+    if (!map) return;
+
+    const handleMapClick = async (e: L.LeafletMouseEvent) => {
+      if (!pinDropMode) return;
+      const { lat, lng } = e.latlng;
+      setPinLoading(true);
+      setPinFeedback(null);
+      try {
+        const result = await createCustomLocation(lat, lng);
+        setPinFeedback(`📍 Custom point registered: ${result.location.name}`);
+        setPinDropMode(false);
+        if (onNewCustomLocation) {
+          onNewCustomLocation(result.location.id);
+        } else {
+          onSelectLocation(result.location.id);
+        }
+        setTimeout(() => setPinFeedback(null), 4000);
+      } catch {
+        setPinFeedback('⚠️ Failed to create custom location. Try again.');
+        setTimeout(() => setPinFeedback(null), 3000);
+      } finally {
+        setPinLoading(false);
+      }
+    };
+
+    map.on('click', handleMapClick);
+    if (pinDropMode) {
+      map.getContainer().style.cursor = 'crosshair';
+    } else {
+      map.getContainer().style.cursor = '';
+    }
+
+    return () => {
+      map.off('click', handleMapClick);
+      map.getContainer().style.cursor = '';
+    };
+  }, [pinDropMode]);
 
   // Render markers and layer effects
   useEffect(() => {
@@ -253,6 +300,36 @@ export const MapSection: React.FC<MapSectionProps> = ({
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Custom Pin Drop toolbar */}
+      <div className="flex flex-wrap items-center gap-3">
+        <button
+          onClick={() => { setPinDropMode(!pinDropMode); setPinFeedback(null); }}
+          disabled={pinLoading}
+          className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold transition-all clay-button ${
+            pinDropMode
+              ? 'bg-[#C9B8E8] text-[#2D2D2D] shadow-[0_4px_12px_rgba(201,184,232,0.5)] animate-pulse'
+              : 'bg-[#F8F5F2] text-[#6B6B6B] hover:text-[#2D2D2D]'
+          }`}
+          title="Click anywhere on the map to analyse a custom location"
+        >
+          {pinLoading ? (
+            <Loader className="w-3.5 h-3.5 animate-spin" strokeWidth={2.5} />
+          ) : (
+            <PlusCircle className="w-3.5 h-3.5" strokeWidth={2.5} />
+          )}
+          <span>{pinDropMode ? '🎯 Click anywhere on map…' : 'Drop Custom Pin'}</span>
+        </button>
+
+        {pinFeedback && (
+          <div className="text-xs font-bold px-3 py-1.5 rounded-full bg-[#B8E6D5] text-[#2D2D2D] shadow-sm animate-pulse">
+            {pinFeedback}
+          </div>
+        )}
+        <span className="text-[10px] font-semibold text-[#6B6B6B]">
+          Click any point on the map to get live AQI estimates for that location
+        </span>
       </div>
 
       {/* Regional Quick Jump Filter Bar */}

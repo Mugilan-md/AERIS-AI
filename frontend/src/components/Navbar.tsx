@@ -1,5 +1,5 @@
 import React from 'react';
-import { Wind, MapPin, AlertTriangle, Compass, Activity, Brain, PlayCircle, RefreshCw } from 'lucide-react';
+import { Wind, MapPin, AlertTriangle, Compass, Activity, Brain, PlayCircle, RefreshCw, FlaskConical } from 'lucide-react';
 import { StationLocation } from '../types';
 
 interface NavbarProps {
@@ -69,6 +69,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             { id: 'map', label: 'Pollution Map', icon: Compass },
             { id: 'forecast', label: 'ML Forecast', icon: Wind },
             { id: 'alerts', label: 'Alert Center', icon: AlertTriangle },
+            { id: 'manual', label: 'Manual Test', icon: FlaskConical },
             { id: 'explain', label: 'Explainable AI', icon: Brain },
           ].map(tab => {
             const Icon = tab.icon;

@@ -69,3 +69,43 @@ export async function setMode(mode: string): Promise<{ status: string; mode: str
   if (!res.ok) throw new Error('Failed to set mode');
   return res.json();
 }
+
+export async function createCustomLocation(lat: number, lon: number, name?: string, city?: string): Promise<{ status: string; location: StationLocation; all_locations: StationLocation[] }> {
+  const res = await fetch(`${API_BASE}/locations/custom`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ lat, lon, name, city })
+  });
+  if (!res.ok) throw new Error('Failed to create custom location');
+  return res.json();
+}
+
+export async function setManualTelemetry(payload: {
+  location_id: string;
+  pm25: number;
+  pm10: number;
+  no2: number;
+  co: number;
+  wind_speed?: number;
+  wind_direction?: number;
+  temperature?: number;
+  humidity?: number;
+}): Promise<{ status: string; location_id: string; mode: string }> {
+  const res = await fetch(`${API_BASE}/manual/telemetry`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  if (!res.ok) throw new Error('Failed to set manual telemetry');
+  return res.json();
+}
+
+export async function resetManualTelemetry(locationId?: string): Promise<{ status: string; mode: string }> {
+  const res = await fetch(`${API_BASE}/manual/reset`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ location_id: locationId })
+  });
+  if (!res.ok) throw new Error('Failed to reset manual telemetry');
+  return res.json();
+}

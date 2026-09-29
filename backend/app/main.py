@@ -39,6 +39,26 @@ class DemoStepRequest(BaseModel):
 class ModeRequest(BaseModel):
     mode: str
 
+class CustomLocationRequest(BaseModel):
+    lat: float
+    lon: float
+    name: Optional[str] = None
+    city: Optional[str] = None
+
+class ManualTelemetryRequest(BaseModel):
+    location_id: str
+    pm25: float
+    pm10: float
+    no2: float
+    co: float
+    wind_speed: Optional[float] = None
+    wind_direction: Optional[int] = None
+    temperature: Optional[float] = None
+    humidity: Optional[float] = None
+
+class ResetManualRequest(BaseModel):
+    location_id: Optional[str] = None
+
 @app.get("/api/status")
 def get_system_status():
     return {
@@ -204,3 +224,43 @@ def set_mode(req: ModeRequest):
         "mode": data_provider.mode,
         "demo_active": data_provider.demo_active
     }
+
+@app.post("/api/locations/custom")
+def create_custom_location(req: CustomLocationRequest):
+    new_loc = data_provider.register_custom_location(req.lat, req.lon, req.name, req.city)
+    return {
+        "status": "created",
+        "location": new_loc,
+        "all_locations": data_provider.get_locations()
+    }
+
+@app.post("/api/manual/telemetry")
+def set_manual_telemetry(req: ManualTelemetryRequest):
+    data_dict = {
+        "pm25": req.pm25,
+        "pm10": req.pm10,
+        "no2": req.no2,
+        "co": req.co,
+        "wind_speed": req.wind_speed,
+        "wind_direction": req.wind_direction,
+        "temperature": req.temperature,
+        "humidity": req.humidity
+    }
+    data_provider.set_manual_telemetry(req.location_id, data_dict)
+    data_provider.set_mode("MANUAL")
+    return {
+        "status": "updated",
+        "location_id": req.location_id,
+        "mode": "MANUAL"
+    }
+
+@app.post("/api/manual/reset")
+def reset_manual_telemetry(req: ResetManualRequest):
+    data_provider.clear_manual_telemetry(req.location_id)
+    if not data_provider.manual_overrides:
+        data_provider.set_mode("SIMULATED")
+    return {
+        "status": "reset",
+        "mode": data_provider.mode
+    }
+
