@@ -7,7 +7,10 @@ import {
   StationLocation
 } from '../types';
 
-const API_BASE = '/api';
+// In production (Vercel): VITE_API_URL = https://aeris-ai-backend.onrender.com
+// In local dev: empty string so Vite's proxy handles /api → localhost:8000
+const API_BASE = (import.meta.env.VITE_API_URL || '') + '/api';
+
 
 export async function fetchLocations(): Promise<StationLocation[]> {
   const res = await fetch(`${API_BASE}/locations`);
