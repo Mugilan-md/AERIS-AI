@@ -31,19 +31,22 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="sticky top-0 z-50 bg-[#F0EBE5]/90 backdrop-blur-md px-4 lg:px-8 py-3.5 transition-all">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
         {/* Brand */}
-        <div className="flex items-center gap-3.5 w-full md:w-auto justify-between md:justify-start">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center shadow-[inset_0_-3px_6px_rgba(0,0,0,0.06),inset_0_3px_6px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.08)]">
-              <Wind className="w-6 h-6 text-[#A8D5E2]" strokeWidth={2.5} />
+        <div className="flex items-center gap-3.5 w-full md:w-auto justify-between md:justify-start shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="w-11 h-11 rounded-2xl bg-white flex items-center justify-center shrink-0 shadow-[inset_0_-3px_6px_rgba(0,0,0,0.06),inset_0_3px_6px_rgba(255,255,255,0.9),0_6px_16px_rgba(0,0,0,0.08)]">
+              <Wind className="w-5.5 h-5.5 text-[#5ea3b8]" strokeWidth={2.5} />
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl font-black tracking-tight text-[#2D2D2D]">AERIS<span className="text-[#6B6B6B] font-light">.AI</span></span>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-2.5 py-0.5 rounded-full bg-[#B8E6D5] text-[#2D2D2D] shadow-[inset_0_-1px_2px_rgba(0,0,0,0.05),0_2px_4px_rgba(0,0,0,0.04)]">
+            <div className="flex flex-col justify-center">
+              <div className="flex items-center gap-2.5">
+                <span className="text-2xl font-black tracking-tight text-[#2D2D2D] leading-none">
+                  AERIS<span className="text-[#6B6B6B] font-light">.AI</span>
+                </span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#B8E6D5]/90 text-[#1F3D30] border border-[#A2D9C3] shadow-sm whitespace-nowrap shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse shrink-0" />
                   C-DAC / CPCB AQI
                 </span>
               </div>
-              <p className="text-xs font-semibold text-[#6B6B6B] hidden sm:block">
+              <p className="text-[11px] font-medium text-[#6B6B6B] tracking-tight leading-tight mt-1 hidden sm:block whitespace-nowrap">
                 See the Air. Predict the Risk. Act Before It Peaks.
               </p>
             </div>
