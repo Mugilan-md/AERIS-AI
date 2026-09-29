@@ -1,6 +1,4 @@
 {
-  "buildCommand": "npm --prefix frontend install && npm --prefix frontend run build",
-  "outputDirectory": "frontend/dist",
   "rewrites": [
     {
       "source": "/api/:match*",
