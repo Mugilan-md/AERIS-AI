@@ -244,6 +244,16 @@
 .leaflet-container {
   border-radius: 24px;
   font-family: var(--font-primary) !important;
+  background-color: #F0EBE5 !important;
+}
+
+.leaflet-div-icon.custom-clay-pin {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-tile {
+  filter: contrast(0.96) saturate(0.9) brightness(1.02);
 }
 
 .leaflet-popup-content-wrapper {
