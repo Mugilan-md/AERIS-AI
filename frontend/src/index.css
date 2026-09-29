@@ -1,0 +1,273 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: #F0EBE5;
+    --surface: #FFFFFF;
+    --text-primary: #2D2D2D;
+    --text-secondary: #6B6B6B;
+
+    --status-good: #B8E6D5;
+    --status-moderate: #FFE5A0;
+    --status-unhealthy: #FFB3A0;
+    --status-hazardous: #D4A5A5;
+
+    --data-blue: #A8D5E2;
+    --data-purple: #C9B8E8;
+
+    --font-primary: 'Nunito', 'Quicksand', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  * {
+    border-color: transparent !important;
+    outline-color: transparent !important;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-family: var(--font-primary);
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle 2.5% atmospheric grain texture */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  p, span, div {
+    font-weight: 500;
+  }
+}
+
+/* ============================================================
+   TACTILE CLAYMORPHISM DESIGN SYSTEM
+============================================================ */
+
+/* Base Clay Card */
+.clay-card {
+  background: var(--surface);
+  border-radius: 24px;
+  border: none !important;
+  box-shadow:
+    inset 0 -4px 8px rgba(0, 0, 0, 0.05),
+    inset 0 4px 8px rgba(255, 255, 255, 0.9),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 4px 12px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.clay-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    inset 0 -4px 8px rgba(0, 0, 0, 0.05),
+    inset 0 4px 8px rgba(255, 255, 255, 0.95),
+    0 14px 32px rgba(0, 0, 0, 0.12),
+    0 6px 16px rgba(0, 0, 0, 0.06);
+}
+
+/* Elevated Hero Clay Card */
+.clay-hero {
+  background: var(--surface);
+  border-radius: 28px;
+  border: none !important;
+  box-shadow:
+    inset 0 -6px 12px rgba(0, 0, 0, 0.06),
+    inset 0 6px 12px rgba(255, 255, 255, 0.95),
+    0 16px 36px rgba(0, 0, 0, 0.10),
+    0 6px 16px rgba(0, 0, 0, 0.05);
+}
+
+/* Clay Button */
+.clay-button {
+  border-radius: 20px;
+  border: none !important;
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.06),
+    inset 0 3px 6px rgba(255, 255, 255, 0.85),
+    0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.clay-button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.06),
+    inset 0 3px 6px rgba(255, 255, 255, 0.9),
+    0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.clay-button:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 3px 6px rgba(0, 0, 0, 0.08),
+    inset 0 -2px 4px rgba(255, 255, 255, 0.6),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Clay Pill Button (999px) */
+.clay-pill {
+  border-radius: 999px;
+  border: none !important;
+  box-shadow:
+    inset 0 -2px 5px rgba(0, 0, 0, 0.05),
+    inset 0 2px 5px rgba(255, 255, 255, 0.85),
+    0 4px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+.clay-pill:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 -2px 5px rgba(0, 0, 0, 0.05),
+    inset 0 2px 5px rgba(255, 255, 255, 0.9),
+    0 8px 18px rgba(0, 0, 0, 0.09);
+}
+
+/* Inset Clay Input / Well */
+.clay-inset {
+  background: #F8F5F2;
+  border-radius: 20px;
+  border: none !important;
+  box-shadow:
+    inset 0 3px 7px rgba(0, 0, 0, 0.06),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.8);
+  transition: box-shadow 0.25s ease;
+}
+
+.clay-inset:focus-within {
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.08),
+    inset 0 -2px 5px rgba(255, 255, 255, 0.9),
+    0 0 0 3px rgba(168, 213, 226, 0.45);
+}
+
+/* Tactile Clay Badge */
+.clay-badge {
+  border-radius: 999px;
+  border: none !important;
+  box-shadow:
+    inset 0 -2px 4px rgba(0, 0, 0, 0.04),
+    inset 0 2px 4px rgba(255, 255, 255, 0.8),
+    0 3px 8px rgba(0, 0, 0, 0.05);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Status-Tinted Clay Surfaces */
+.clay-good {
+  background: #B8E6D5;
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.06),
+    inset 0 3px 6px rgba(255, 255, 255, 0.7),
+    0 8px 20px rgba(184, 230, 213, 0.45);
+}
+
+.clay-moderate {
+  background: #FFE5A0;
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.06),
+    inset 0 3px 6px rgba(255, 255, 255, 0.7),
+    0 8px 20px rgba(255, 229, 160, 0.45);
+}
+
+.clay-unhealthy {
+  background: #FFB3A0;
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.06),
+    inset 0 3px 6px rgba(255, 255, 255, 0.7),
+    0 8px 20px rgba(255, 179, 160, 0.45);
+}
+
+.clay-hazardous {
+  background: #D4A5A5;
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.06),
+    inset 0 3px 6px rgba(255, 255, 255, 0.7),
+    0 8px 20px rgba(212, 165, 165, 0.45);
+}
+
+.clay-blue {
+  background: #A8D5E2;
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.06),
+    inset 0 3px 6px rgba(255, 255, 255, 0.7),
+    0 8px 20px rgba(168, 213, 226, 0.45);
+}
+
+.clay-purple {
+  background: #C9B8E8;
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.06),
+    inset 0 3px 6px rgba(255, 255, 255, 0.7),
+    0 8px 20px rgba(201, 184, 232, 0.45);
+}
+
+/* Custom Scrollbar for Clay UI */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F0EBE5;
+}
+::-webkit-scrollbar-thumb {
+  background: #D8D2CA;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #B8B2AA;
+}
+
+/* Leaflet Custom Clay Styling */
+.leaflet-container {
+  border-radius: 24px;
+  font-family: var(--font-primary) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #FFFFFF !important;
+  border-radius: 20px !important;
+  box-shadow:
+    inset 0 -3px 6px rgba(0, 0, 0, 0.05),
+    inset 0 3px 6px rgba(255, 255, 255, 0.9),
+    0 10px 28px rgba(0, 0, 0, 0.12) !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+  padding: 4px;
+}
+
+.leaflet-popup-tip {
+  background: #FFFFFF !important;
+}
+
+/* Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+}
