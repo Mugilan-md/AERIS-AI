@@ -3,4 +3,5 @@ uvicorn[standard]==0.34.0
 pydantic==2.13.5
 scikit-learn==1.9.1
 numpy==2.5.3
+pandas==2.2.3
 python-multipart==0.0.20
