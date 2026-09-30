@@ -43,7 +43,6 @@ export function App() {
   const [activeTab, setActiveTab] = useState<string>('command');
   const [loading, setLoading] = useState<boolean>(false);
   const [backendStatus, setBackendStatus] = useState<BackendConnectionStatus>(getBackendStatus());
-  const [showEdgeNotice, setShowEdgeNotice] = useState<boolean>(true);
 
   // Demo Mode State
   const [demoActive, setDemoActive] = useState<boolean>(false);
@@ -193,25 +192,6 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-[#F0EBE5] text-[#2D2D2D] pb-16">
-      {/* Resilient Standby Banner (dismissible, clean, informational) */}
-      {backendStatus === 'WARMING_UP' && showEdgeNotice && (
-        <div className="bg-[#FFE5A0]/90 border-b border-[#ECD182] px-4 py-2 text-xs font-bold text-[#594200] flex items-center justify-between gap-3 backdrop-blur-sm transition-all shadow-sm">
-          <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-1 text-center">
-            <span className="w-2 h-2 rounded-full bg-amber-600 animate-ping inline-block shrink-0" />
-            <span>
-              <strong>AERIS Resilient Edge Active:</strong> Zero-downtime client telemetry is serving live data while the cloud backend container warms up from free-tier standby.
-            </span>
-          </div>
-          <button
-            onClick={() => setShowEdgeNotice(false)}
-            className="text-[#594200]/70 hover:text-[#594200] px-2 py-0.5 rounded-lg hover:bg-black/5 transition-all text-xs font-black shrink-0"
-            title="Dismiss notice"
-          >
-            ✕
-          </button>
-        </div>
-      )}
-
       {/* Top Sticky Navigation */}
       <Navbar
         locations={locations}

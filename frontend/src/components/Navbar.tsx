@@ -41,7 +41,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="sticky top-0 z-50 bg-[#F0EBE5]/95 backdrop-blur-md px-4 lg:px-8 pt-3 pb-3 border-b border-black/5 transition-all shadow-[0_4px_20px_rgba(0,0,0,0.03)]">
-      <div className="max-w-7xl mx-auto flex flex-col gap-3">
+      <div className="max-w-7xl mx-auto flex flex-col gap-3.5">
         {/* Tier 1: Brand & Status on Left, Operational Controls on Right */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           {/* Brand & System Status Badges */}
@@ -59,21 +59,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse shrink-0" />
                     C-DAC / CPCB AQI
                   </span>
-                  {backendStatus === 'CLOUD_LIVE' ? (
+                  {backendStatus === 'CLOUD_LIVE' && (
                     <span
                       className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#B8E6D5]/90 text-[#1F3D30] border border-[#A2D9C3] shadow-sm whitespace-nowrap shrink-0"
                       title="Connected to live cloud computing container"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0" />
-                      Cloud Live
-                    </span>
-                  ) : (
-                    <span
-                      className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFE5A0]/90 text-[#594200] border border-[#ECD182] shadow-sm whitespace-nowrap shrink-0 animate-pulse"
-                      title="Resilient Edge Engine active with zero downtime while cloud container warms up"
-                    >
-                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 animate-ping" />
-                      Edge Active • Cloud Warming
+                      Live Cloud Pipeline
                     </span>
                   )}
                 </div>
@@ -99,9 +91,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* Right Operational Controls: Location Picker, Demo Button, Refresh */}
           <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end flex-wrap sm:flex-nowrap">
             {/* Location Selector */}
-            <div className="relative flex-1 sm:flex-initial min-w-[200px]">
-              <div className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white clay-inset text-xs font-bold text-[#2D2D2D]">
-                <MapPin className="w-3.5 h-3.5 text-[#C9B8E8] shrink-0" strokeWidth={2.5} />
+            <div className="relative flex-1 sm:flex-initial min-w-[210px]">
+              <div className="flex items-center gap-2 px-3.5 py-2.5 rounded-2xl bg-white clay-inset text-xs font-bold text-[#2D2D2D]">
+                <MapPin className="w-4 h-4 text-[#C9B8E8] shrink-0" strokeWidth={2.5} />
                 <select
                   value={selectedLocationId}
                   onChange={(e) => onSelectLocation(e.target.value)}
@@ -119,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Hackathon Demo Mode Trigger */}
             <button
               onClick={onToggleDemoMode}
-              className={`flex items-center gap-2 px-4 py-2 rounded-2xl text-xs font-bold clay-button transition-all shrink-0 ${
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold clay-button transition-all shrink-0 ${
                 demoActive
                   ? 'bg-[#FFB3A0] text-[#2D2D2D] shadow-[0_4px_14px_rgba(255,179,160,0.5)] animate-pulse'
                   : 'bg-white text-[#2D2D2D]'
@@ -134,7 +126,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={onRefresh}
               disabled={loading}
-              className="w-9 h-9 rounded-2xl bg-white hidden sm:flex items-center justify-center clay-button text-[#2D2D2D] shrink-0"
+              className="w-10 h-10 rounded-2xl bg-white hidden sm:flex items-center justify-center clay-button text-[#2D2D2D] shrink-0"
               title="Refresh live data"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} strokeWidth={2.5} />
@@ -142,9 +134,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Tier 2: Full-Length Spacious Navigation Bar ("Moved One Step Forward & Increased Length") */}
-        <nav className="w-full bg-white/80 rounded-2xl p-1.5 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04),0_6px_16px_rgba(0,0,0,0.04)] overflow-x-auto no-scrollbar">
-          <div className="flex items-center justify-between gap-2 min-w-max md:min-w-0 md:grid md:grid-cols-6">
+        {/* Tier 2: Enhanced Large Navigation Bar (Increased Size, Height & Length) */}
+        <nav className="w-full bg-white/90 rounded-2xl p-2 shadow-[inset_0_2px_4px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.06)] overflow-x-auto no-scrollbar">
+          <div className="flex items-center justify-between gap-2.5 min-w-max md:min-w-0 md:grid md:grid-cols-6">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
@@ -152,13 +144,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={tab.id}
                   onClick={() => onSelectTab(tab.id)}
-                  className={`flex items-center justify-center gap-2.5 px-4 py-2.5 rounded-xl text-xs font-extrabold transition-all whitespace-nowrap text-center ${
+                  className={`flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl text-sm font-extrabold transition-all whitespace-nowrap text-center ${
                     isActive
-                      ? 'bg-[#2D2D2D] text-white shadow-[0_4px_12px_rgba(45,45,45,0.25)] scale-[1.02]'
-                      : 'text-[#6B6B6B] hover:text-[#2D2D2D] hover:bg-white/90'
+                      ? 'bg-[#2D2D2D] text-white shadow-[0_6px_18px_rgba(0,0,0,0.28)] scale-[1.02]'
+                      : 'text-[#555555] hover:text-[#111111] hover:bg-white/90 hover:scale-[1.01]'
                   }`}
                 >
-                  <Icon className="w-4 h-4 shrink-0" strokeWidth={2.5} />
+                  <Icon className="w-4.5 h-4.5 shrink-0" strokeWidth={2.5} />
                   <span>{tab.label}</span>
                 </button>
               );
