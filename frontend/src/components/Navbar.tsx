@@ -1,6 +1,7 @@
 import React from 'react';
 import { Wind, MapPin, AlertTriangle, Compass, Activity, Brain, PlayCircle, RefreshCw, FlaskConical } from 'lucide-react';
 import { StationLocation } from '../types';
+import { BackendConnectionStatus } from '../services/api';
 
 interface NavbarProps {
   locations: StationLocation[];
@@ -13,6 +14,7 @@ interface NavbarProps {
   onToggleDemoMode: () => void;
   onRefresh: () => void;
   loading: boolean;
+  backendStatus?: BackendConnectionStatus;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -25,7 +27,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   demoActive,
   onToggleDemoMode,
   onRefresh,
-  loading
+  loading,
+  backendStatus = 'WARMING_UP'
 }) => {
   return (
     <header className="sticky top-0 z-50 bg-[#F0EBE5]/90 backdrop-blur-md px-4 lg:px-8 py-3.5 transition-all">
@@ -37,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Wind className="w-5.5 h-5.5 text-[#5ea3b8]" strokeWidth={2.5} />
             </div>
             <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-2xl font-black tracking-tight text-[#2D2D2D] leading-none">
                   AERIS<span className="text-[#6B6B6B] font-light">.AI</span>
                 </span>
@@ -45,6 +48,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse shrink-0" />
                   C-DAC / CPCB AQI
                 </span>
+                {backendStatus === 'CLOUD_LIVE' ? (
+                  <span
+                    className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#B8E6D5]/90 text-[#1F3D30] border border-[#A2D9C3] shadow-sm whitespace-nowrap shrink-0"
+                    title="Connected to live cloud computing container"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 shrink-0" />
+                    Cloud Live
+                  </span>
+                ) : (
+                  <span
+                    className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-[#FFE5A0]/90 text-[#594200] border border-[#ECD182] shadow-sm whitespace-nowrap shrink-0 animate-pulse"
+                    title="Resilient Edge Engine active with zero downtime while cloud container warms up"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 animate-ping" />
+                    Edge Active • Cloud Warming
+                  </span>
+                )}
               </div>
               <p className="text-[11px] font-medium text-[#6B6B6B] tracking-tight leading-tight mt-1 hidden sm:block whitespace-nowrap">
                 See the Air. Predict the Risk. Act Before It Peaks.

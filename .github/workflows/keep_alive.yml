@@ -1,0 +1,16 @@
+name: Keep AERIS AI Backend Warm
+
+on:
+  schedule:
+    # Ping every 14 minutes to prevent Render free-tier sleep (inactivity timeout is 15m)
+    - cron: '*/14 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Render Backend Health Check
+        run: |
+          echo "Pinging AERIS AI Cloud Intelligence API..."
+          curl -s -f -m 60 "https://aeris-ai-1iu7.onrender.com/api/status" || echo "Backend warming up"
